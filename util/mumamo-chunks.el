@@ -446,17 +446,18 @@ See `mumamo-possible-chunk-forward' for POS and MAX."
 
 (defconst mumamo-style-tag-start-regex
   (rx "<style"
-      space
-      (0+ (not (any ">")))
-      "type"
-      (0+ space)
-      "="
-      (0+ space)
-      ?\"
-      "text/css"
-      ?\"
-      (0+ (not (any ">")))
-      ">"
+      (or (and (0+ space) ">")
+          (and space
+               (0+ (not (any ">")))
+               "type"
+               (0+ space)
+               "="
+               (0+ space)
+               ?\"
+               "text/css"
+               ?\"
+               (0+ (not (any ">")))
+               ">"))
       ;; FIX-ME: Commented out because of bug in Emacs
       ;;
       ;;(optional (0+ space) "<![CDATA[")
@@ -503,18 +504,19 @@ See `mumamo-possible-chunk-forward' for POS and MAX."
 
 (defconst mumamo-script-tag-start-regex
   (rx "<script"
-      space
-      (0+ (not (any ">")))
-      "type"
-      (0+ space)
-      "="
-      (0+ space)
-      ;;(or "text" "application")
-      ;;"/"
-      ;;(or "javascript" "ecmascript")
-      (or "'text/javascript'" "\"text/javascript\"")
-      (0+ (not (any ">")))
-      ">"
+      (or (and (0+ space) ">")
+          (and space
+               (0+ (not (any ">")))
+               "type"
+               (0+ space)
+               "="
+               (0+ space)
+               ;;(or "text" "application")
+               ;;"/"
+               ;;(or "javascript" "ecmascript")
+               (or "'text/javascript'" "\"text/javascript\"")
+               (0+ (not (any ">")))
+               ">"))
       ;; FIX-ME: Commented out because of bug in Emacs
       ;;
       ;;(optional (0+ space) "<![CDATA[" )
